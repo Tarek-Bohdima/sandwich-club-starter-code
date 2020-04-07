@@ -3,7 +3,10 @@ package com.udacity.sandwichclub;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -43,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +59,34 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
+        TextView originLabel = findViewById(R.id.origin_label);
+        TextView originTv = findViewById(R.id.origin_tv);
+        TextView akaLabel = findViewById(R.id.aka_label);
+        TextView akaTv = findViewById(R.id.aka_tv);
+        TextView ingredientsTv = findViewById(R.id.ingredients_tv);
+        TextView descriptionTv = findViewById(R.id.description_tv);
+
+        originTv.setText(sandwich.getPlaceOfOrigin());
+        akaTv.setText(TextUtils.join(", ", sandwich.getAlsoKnownAs()));
+        ingredientsTv.setText(TextUtils.join(", ", sandwich.getIngredients()));
+        descriptionTv.setText(sandwich.getDescription());
+
+        if (akaTv.getText().toString().isEmpty()) {
+            akaLabel.setVisibility(View.GONE);
+            akaTv.setVisibility(View.GONE);
+        } else {
+            akaLabel.setVisibility(View.VISIBLE);
+            akaTv.setVisibility(View.VISIBLE);
+        }
+
+        if (originTv.getText().toString().isEmpty()) {
+            originLabel.setVisibility(View.GONE);
+            originTv.setVisibility(View.GONE);
+        } else {
+            originLabel.setVisibility(View.VISIBLE);
+            originTv.setVisibility(View.VISIBLE);
+        }
 
     }
 }
