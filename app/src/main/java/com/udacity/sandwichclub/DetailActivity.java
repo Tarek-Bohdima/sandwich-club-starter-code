@@ -18,12 +18,22 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
 
+
+    ImageView ingredientsIv;
+    TextView originLabel;
+    TextView originTv;
+    TextView akaLabel;
+    TextView akaTv;
+    TextView ingredientsTv;
+    TextView descriptionTv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        ImageView ingredientsIv = findViewById(R.id.image_iv);
+
+        initialize();
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -54,18 +64,26 @@ public class DetailActivity extends AppCompatActivity {
         setTitle(sandwich.getMainName());
     }
 
+    // Using findViewById, we get a reference to our TextView from xml.
+    private void initialize() {
+        ingredientsIv = findViewById(R.id.image_iv);
+
+        originLabel = findViewById(R.id.origin_label);
+        originTv = findViewById(R.id.origin_tv);
+
+        akaLabel = findViewById(R.id.aka_label);
+        akaTv = findViewById(R.id.aka_tv);
+
+        ingredientsTv = findViewById(R.id.ingredients_tv);
+        descriptionTv = findViewById(R.id.description_tv);
+    }
+
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
     private void populateUI(Sandwich sandwich) {
-        TextView originLabel = findViewById(R.id.origin_label);
-        TextView originTv = findViewById(R.id.origin_tv);
-        TextView akaLabel = findViewById(R.id.aka_label);
-        TextView akaTv = findViewById(R.id.aka_tv);
-        TextView ingredientsTv = findViewById(R.id.ingredients_tv);
-        TextView descriptionTv = findViewById(R.id.description_tv);
 
         originTv.setText(sandwich.getPlaceOfOrigin());
         akaTv.setText(TextUtils.join(", ", sandwich.getAlsoKnownAs()));
@@ -73,20 +91,41 @@ public class DetailActivity extends AppCompatActivity {
         descriptionTv.setText(sandwich.getDescription());
 
         if (akaTv.getText().toString().isEmpty()) {
-            akaLabel.setVisibility(View.GONE);
-            akaTv.setVisibility(View.GONE);
+            hideAka();
         } else {
-            akaLabel.setVisibility(View.VISIBLE);
-            akaTv.setVisibility(View.VISIBLE);
+            showAka();
         }
 
         if (originTv.getText().toString().isEmpty()) {
-            originLabel.setVisibility(View.GONE);
-            originTv.setVisibility(View.GONE);
+            hideOrigin();
         } else {
-            originLabel.setVisibility(View.VISIBLE);
-            originTv.setVisibility(View.VISIBLE);
+            showOrigin();
         }
 
     }
+
+    // a method to show place of Origin label and text
+    private void showOrigin() {
+        originLabel.setVisibility(View.VISIBLE);
+        originTv.setVisibility(View.VISIBLE);
+    }
+
+    // a method to hide place of Origin label and text
+    private void hideOrigin() {
+        originLabel.setVisibility(View.GONE);
+        originTv.setVisibility(View.GONE);
+    }
+
+    // a method to show the "Also Known As" label and text
+    private void hideAka() {
+        akaLabel.setVisibility(View.GONE);
+        akaTv.setVisibility(View.GONE);
+    }
+
+    // a method to hide the "Also Known As" label and text
+    private void showAka() {
+        akaLabel.setVisibility(View.VISIBLE);
+        akaTv.setVisibility(View.VISIBLE);
+    }
+
 }
